@@ -18,8 +18,8 @@ pub fn give_result(input: i32) -> Result<(), ()> {
 
 pub fn check_if_five(input: i32) -> Result<i32, String> {
     match input {
-        5 => { Ok(input) }
-        _ => Err("The number is not five".to_string())
+        5 => Ok(input),
+        _ => Err("The number is not five".to_string()),
     }
 }
 
@@ -37,10 +37,10 @@ pub fn prints_three_things(vector: Vec<i32>) {
     }
 }
 
-
-pub fn get_fourth(input: &[i32]) ->i32{
-    let number = input.get(3).expect("Input vector needs at least 4 elements");
+pub fn get_fourth(input: &[i32]) -> i32 {
+    let number = input
+        .get(3)
+        .expect("Input vector needs at least 4 elements");
     let number = input.get(3).unwrap_or(&0);
     *number
 }
-

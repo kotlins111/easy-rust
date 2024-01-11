@@ -1,7 +1,6 @@
-use std::collections::{BinaryHeap, BTreeMap, BTreeSet, HashMap, HashSet, VecDeque};
-use std::ptr::hash;
 use crate::collections::LibraryType::Country;
-
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque};
+use std::ptr::hash;
 
 static DATA: [i32; 10] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -97,7 +96,6 @@ pub fn loop_break_return_value() {
     println!("{}", my_number);
 }
 
-
 //hashmap
 
 struct City {
@@ -116,7 +114,10 @@ pub fn hashmap_demo1() {
     tallinn.population.insert(2020, 437_169);
 
     for (year, population) in tallinn.population {
-        println!("In the year {} the city of {} had a population of {}", year, tallinn.name, population);
+        println!(
+            "In the year {} the city of {} had a population of {}",
+            year, tallinn.name, population
+        );
     }
 }
 
@@ -149,7 +150,6 @@ pub fn hashmap_overwrite() {
     book_map.insert(1, "L'Allemagne Moderne");
     book_map.insert(1, "L'Allemagne Moderne");
 
-
     let old_value = book_map.insert(1, "Eye of the world");
 
     println!("old value is {}", old_value.unwrap());
@@ -158,7 +158,12 @@ pub fn hashmap_overwrite() {
 }
 
 pub fn hashmap_entry_demo() {
-    let book_list = ["L'Allemagne Moderne", "Le Petit Prince", "Eye of the world", "Eye of the world"];
+    let book_list = [
+        "L'Allemagne Moderne",
+        "Le Petit Prince",
+        "Eye of the world",
+        "Eye of the world",
+    ];
 
     let mut book_map = HashMap::new();
     for book in book_list {
@@ -197,7 +202,8 @@ pub fn hashset_demo1() {
         51, 58, 34, 59, 44, 19, 93, 28, 33, 18, 46, 61, 76, 14, 87, 84, 73, 71, 29, 94, 10, 35, 20,
         35, 80, 8, 43, 79, 25, 60, 26, 11, 37, 94, 32, 90, 51, 11, 28, 76, 16, 63, 95, 13, 60, 59,
         96, 95, 55, 92, 28, 3, 17, 91, 36, 20, 24, 0, 86, 82, 58, 93, 68, 54, 80, 56, 22, 67, 82,
-        58, 64, 80, 16, 61, 57, 14, 11];
+        58, 64, 80, 16, 61, 57, 14, 11,
+    ];
 
     let mut hashset = HashSet::new();
     let mut ord_hashset = BTreeSet::new();
@@ -241,25 +247,28 @@ pub fn binary_heap_demo() {
         my_heap.push(number);
     }
 
-    while let Some(value) = my_heap.pop() {  // pops from front
-        println!("Popped off {value}. Remaining numbers are: {:?}", show_remainder(&my_heap));
+    while let Some(value) = my_heap.pop() {
+        // pops from front
+        println!(
+            "Popped off {value}. Remaining numbers are: {:?}",
+            show_remainder(&my_heap)
+        );
     }
 }
-
 
 //VecDeque
 
 pub fn vec_remove_demo1() {
     let mut my_vec = vec![0; 6_00_000];
     for i in 0..6_00_000 {
-        my_vec.remove(0);  // remove first element and shift rest to the left
+        my_vec.remove(0); // remove first element and shift rest to the left
     }
 }
 
 pub fn vec_deque_remove_demo() {
     let mut my_vec = VecDeque::from(vec![0; 6_00_000_000]);
     for i in 0..6_00_000_000_i64 {
-        my_vec.pop_front();  // quite fast (about 4 seconds)
+        my_vec.pop_front(); // quite fast (about 4 seconds)
     }
 }
 
@@ -279,7 +288,11 @@ fn done(input: &mut VecDeque<(&str, bool)>) {
 
 pub fn vec_deque_task_demo() {
     let mut my_deque = VecDeque::with_capacity(10);
-    let things_to_do = vec!["send email to pm", "submit the concur report", "phone lucy back"];
+    let things_to_do = vec![
+        "send email to pm",
+        "submit the concur report",
+        "phone lucy back",
+    ];
     for x in things_to_do {
         my_deque.push_front((x, false));
     }
@@ -292,7 +305,6 @@ pub fn vec_deque_task_demo() {
         println!("{:?}", task);
     }
 }
-
 
 // imperative style
 fn sum_vec_imperative() {
@@ -312,24 +324,18 @@ fn sum_vec_functional() {
     println!("{:?}", new_vec);
 }
 
-
 fn collection_chain() {
     let my_vec = DATA.clone();
-    let new_vec = my_vec.into_iter()
-        .skip(3)
-        .take(4)
-        .collect::<Vec<i32>>();
+    let new_vec = my_vec.into_iter().skip(3).take(4).collect::<Vec<i32>>();
 
     println!("{:?}", new_vec);
 }
-
 
 // iterators
 fn iterator_demo1() {
     let vector1 = vec![1, 2, 3];
     let vector2 = vector1.iter().map(|x| x + 1).collect::<Vec<i32>>();
     let vector3 = vector1.into_iter().map(process).collect::<Vec<i32>>(); // into_iter destroy vector1
-
 
     let mut vector4 = vec![5, 1, 2];
     vector4.iter_mut().for_each(|x| *x += 1);
@@ -339,7 +345,6 @@ fn process(x: i32) -> i32 {
     x * 10
 }
 
-
 // impl Iterator
 
 #[derive(Debug)]
@@ -347,7 +352,6 @@ struct Library {
     lib_type: LibraryType,
     books: Vec<String>,
 }
-
 
 #[derive(Debug, Clone)]
 enum LibraryType {
@@ -361,9 +365,7 @@ impl Iterator for Library {
     fn next(&mut self) -> Option<Self::Item> {
         match self.books.pop() {
             None => None,
-            Some(book) => {
-                Some(book + " is found")
-            }
+            Some(book) => Some(book + " is found"),
         }
     }
 }
@@ -390,20 +392,14 @@ impl Iterator for Alternate {
 pub fn iterator_demo2() {
     let lib = Library {
         lib_type: Country,
-        books: vec!["Eyes for eyes".to_string(), "Dimension 2".to_string(), "Rust Programming".to_string()],
+        books: vec![
+            "Eyes for eyes".to_string(),
+            "Dimension 2".to_string(),
+            "Rust Programming".to_string(),
+        ],
     };
 
     for book in lib {
         println!("{}", book);
     }
 }
-
-
-
-
-
-
-
-
-
-

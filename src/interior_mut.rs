@@ -34,7 +34,6 @@ pub fn interior_mut_demo1() {
     println!("{:?}", user_1);
 }
 
-
 #[derive(Debug)]
 struct User {
     id: u32,
@@ -42,7 +41,6 @@ struct User {
     username: String,
     active: RefCell<bool>,
 }
-
 
 pub fn running_panic() {
     let user_1 = User {
@@ -56,7 +54,6 @@ pub fn running_panic() {
     let borrow_two = user_1.active.borrow_mut(); // second mutable borrow - not okay
 }
 
-
 pub fn mutex_demo() {
     let my_mutex = Mutex::new(5);
     {
@@ -67,8 +64,8 @@ pub fn mutex_demo() {
     } // out scope the lock released
 
     *my_mutex.lock().unwrap() = 5; // directly deref no need to release lock
-    for _ in 0..5{
-        *my_mutex.lock().unwrap() +=1;
+    for _ in 0..5 {
+        *my_mutex.lock().unwrap() += 1;
     }
     // or use std::mem::drop to release the lock make this go out of scope
 
@@ -78,10 +75,10 @@ pub fn mutex_demo() {
     println!("{:?}", my_mutex);
 
     let mut mutex_changer1 = my_mutex.lock().unwrap(); // mutex_changer has the lock
-    //let mut other_mutex_changer = my_mutex.lock().unwrap(); // other_mutex_changer wants the lock
-    // the program is waiting
-    // and waiting
-    // and will wait forever.
+                                                       //let mut other_mutex_changer = my_mutex.lock().unwrap(); // other_mutex_changer wants the lock
+                                                       // the program is waiting
+                                                       // and waiting
+                                                       // and will wait forever.
 
     println!("Dead lock.");
 
@@ -90,12 +87,10 @@ pub fn mutex_demo() {
     if let Err(err) = my_lock {
         println!("{:?}", err);
     }
-
 }
 
-
-pub fn rwlock_demo(){
-    let my_rw_lock  = RwLock::new(5);
+pub fn rwlock_demo() {
+    let my_rw_lock = RwLock::new(5);
 
     //any read is fine
     let read1 = my_rw_lock.read().unwrap();
@@ -103,7 +98,7 @@ pub fn rwlock_demo(){
     // dbg!(read1);
     // dbg!(read2);
     println!("{:?}", my_rw_lock);
-    println!("{:?} {:?}", read1,read2);
+    println!("{:?} {:?}", read1, read2);
     drop(read1);
     drop(read2);
 
@@ -123,34 +118,5 @@ pub fn rwlock_demo(){
         println!("Couldn't get write access, sorry!")
     };
     let read3 = my_rwlock1.try_read(); // try to acquire lock
-    println!("{:?}", read3);  // Ok(5)
+    println!("{:?}", read3); // Ok(5)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

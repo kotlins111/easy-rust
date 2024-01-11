@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod test {
-    use std::collections::BinaryHeap;
     use easy_rust::anti_null_exception::{check_if_five, give_result, take_fifth};
     use easy_rust::traits::EvenOddVec;
+    use std::collections::BinaryHeap;
 
     #[test]
     fn test1() {
@@ -26,7 +26,7 @@ mod test {
                 assert_eq!(inside_number, None);
             }
         }
-        assert!(1  <  2);
+        assert!(1 < 2);
     }
 
     #[test]
@@ -53,7 +53,9 @@ mod test {
         for i in 0..10 {
             match my_vec.get(i) {
                 None => {}
-                Some(number) => { println!("The number is {number}") }
+                Some(number) => {
+                    println!("The number is {number}")
+                }
             }
         }
 
@@ -68,11 +70,11 @@ mod test {
     #[test]
     fn test_weather_parse() {
         let weather_vec = vec![
-            vec!["Berlin","cloudy","5","-7","78"],
-            vec!["Athens","sunny","not humid","20","10","50"],
+            vec!["Berlin", "cloudy", "5", "-7", "78"],
+            vec!["Athens", "sunny", "not humid", "20", "10", "50"],
         ];
-        for mut city in weather_vec{
-            println!("For the city of {}:",city[0]);
+        for mut city in weather_vec {
+            println!("For the city of {}:", city[0]);
             while let Some(information) = city.pop() {
                 if let Ok(value) = information.parse::<i32>() {
                     println!("The number is {value}.")
@@ -84,29 +86,29 @@ mod test {
     #[test]
     fn test_task_priority() {
         let mut jobs = BinaryHeap::with_capacity(10);
-        jobs.push((100,"Write back to email from the ceo"));
-        jobs.push((80,"Finish the report"));
-        jobs.push((5,"Watch some youtube"));
-        jobs.push((70,"Tell the team thanks for working hard"));
-        jobs.push((30,"Plan who to hire next for the team"));
+        jobs.push((100, "Write back to email from the ceo"));
+        jobs.push((80, "Finish the report"));
+        jobs.push((5, "Watch some youtube"));
+        jobs.push((70, "Tell the team thanks for working hard"));
+        jobs.push((30, "Plan who to hire next for the team"));
 
         while let Some(job) = jobs.pop() {
-            println!("You need to: {}",job.1);
+            println!("You need to: {}", job.1);
         }
     }
 
     #[test]
     fn test_bytes_to_chars() {
-        let bytes = vec![240,159,146,149];
+        let bytes = vec![240, 159, 146, 149];
         let s = String::from_utf8(bytes).expect("Found invalid utf-8");
-        assert_eq!(s,"💕".to_string()); //emoji take 4 bytes
+        assert_eq!(s, "💕".to_string()); //emoji take 4 bytes
     }
 
     #[test]
     fn test_even_odd_vec_from() {
-        let numbers = [1,2,8,7,-1,-3,9,11].to_vec();
+        let numbers = [1, 2, 8, 7, -1, -3, 9, 11].to_vec();
         let new_vec = EvenOddVec::from(numbers);
-        assert_eq!(new_vec.0[0][0],2);
-        assert_eq!(new_vec.0[1][1],7);
+        assert_eq!(new_vec.0[0][0], 2);
+        assert_eq!(new_vec.0[1][1], 7);
     }
 }

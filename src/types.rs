@@ -6,9 +6,9 @@ use std::iter::{Skip, Take};
 use std::slice::Iter;
 
 type CharacterVec = Vec<char>;
-type SkipFourTakeFive<'a,T> = Take<Skip<Iter<'a,T>>>;
+type SkipFourTakeFive<'a, T> = Take<Skip<Iter<'a, T>>>;
 
-fn returns<'a,T:Display>(input: &'a Vec<T>) ->SkipFourTakeFive<'a,T>{
+fn returns<'a, T: Display>(input: &'a Vec<T>) -> SkipFourTakeFive<'a, T> {
     input.iter().skip(4).take(5)
 }
 // tuple
@@ -328,20 +328,15 @@ where
     );
 }
 
-
 // type alias
-enum FileState{
+enum FileState {
     CannotAccess,
     FileOpenAndReady,
     NoSuchFile,
 }
 
-fn give_filestate(input:&FileState){
-    use FileState::{
-        CannotAccess as NoAccess,
-        FileOpenAndReady as Good,
-        NoSuchFile as NotFound
-    };
+fn give_filestate(input: &FileState) {
+    use FileState::{CannotAccess as NoAccess, FileOpenAndReady as Good, NoSuchFile as NotFound};
     match input {
         NoAccess => {}
         Good => {}
@@ -349,6 +344,6 @@ fn give_filestate(input:&FileState){
     }
 }
 
-fn todo_function() -> String{
-    todo!()  // no need to return String for now, do it later
+fn todo_function() -> String {
+    todo!() // no need to return String for now, do it later
 }

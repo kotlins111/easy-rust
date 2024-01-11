@@ -1,15 +1,15 @@
 use std::rc::Rc;
 
 //RC
-fn takes_a_string(string: String){
+fn takes_a_string(string: String) {
     println!("{}", string);
 }
 
-fn takes_a_string_again(string: String){
+fn takes_a_string_again(string: String) {
     println!("{}", string);
 }
 
-fn takes_string(){
+fn takes_string() {
     let s = "I am a string".to_string();
     takes_a_string(s);
     // takes_a_string_again(s);  // s is not available
@@ -28,7 +28,7 @@ struct CityData1 {
     histories: Vec<String>,
 }
 
-pub fn rc_demo1(){
+pub fn rc_demo1() {
     let calgary = City1 {
         name: "Calgary".to_string(),
         population: 1_200_000,
@@ -43,7 +43,6 @@ pub fn rc_demo1(){
 
     // println!("{} {}", calgary.city_history,calgary.name);
 }
-
 
 // use rc
 
@@ -60,7 +59,7 @@ struct CityData {
     histories: Vec<Rc<String>>,
 }
 
-pub fn rc_demo2(){
+pub fn rc_demo2() {
     let calgary = City {
         name: "Calgary".to_string(),
         population: 1_200_000,

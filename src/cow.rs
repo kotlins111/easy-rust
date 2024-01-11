@@ -3,22 +3,30 @@ use std::fmt::format;
 use std::ops::Index;
 
 pub fn cow_demo() {
-    let sentence_string = "Once upon a time, there was a friendly curious crab named Ferris".to_string();
+    let sentence_string =
+        "Once upon a time, there was a friendly curious crab named Ferris".to_string();
     for word in sentence_string.split(' ') {
         if three_vowels(word) {
             println!("{} has three consecutive vowels!", word);
         }
     }
 
-    for i in 1..7{
+    for i in 1..7 {
         match modulo_3(i) {
-           ref c @ Cow::Borrowed(message) => {println!("{} went in,the cow is borrowed with this message",c.clone().into_owned())}
-            Cow::Owned(message) => { println!("{} went in .The cow is owned with this message",message);}
+            ref c @ Cow::Borrowed(message) => {
+                println!(
+                    "{} went in,the cow is borrowed with this message",
+                    c.clone().into_owned()
+                )
+            }
+            Cow::Owned(message) => {
+                println!("{} went in .The cow is owned with this message", message);
+            }
         }
     }
 
     let cow_str = modulo_3(3);
-    let my_string =  cow_str.into_owned();
+    let my_string = cow_str.into_owned();
 }
 
 // use &str as parameter is better
@@ -32,7 +40,7 @@ fn three_vowels(word: &str) -> bool {
                     return true;
                 }
             }
-            _ => vowel_count = 0
+            _ => vowel_count = 0,
         }
     }
     false
@@ -40,8 +48,8 @@ fn three_vowels(word: &str) -> bool {
 
 fn modulo_3(input: u8) -> Cow<'static, str> {
     match input % 3 {
-        0 => { "Remainder is 0".into() }
+        0 => "Remainder is 0".into(),
         1 => "Remainder is 1".into(),
-        remainder => format!("Remainder is {}", remainder).into()
+        remainder => format!("Remainder is {}", remainder).into(),
     }
 }

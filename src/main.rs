@@ -1,13 +1,19 @@
 // use easy_rust::closure::closure_demo1;
 
-use easy_rust::closure::{chars_vec_demo, closure_demo1, closure_demo3, closure_demo4, closure_function_demo, collect_chars, collect_hashmap, cycle_vec, filter_map_demo1, filter_month, find_and_position, inspect_demo, iter_rev_demo, match_indices_demo, peek_vector_demo, reduce_or_fold, take_fourth, vector_cut, while_iter};
+use easy_rust::closure::{
+    chars_vec_demo, closure_demo1, closure_demo3, closure_demo4, closure_function_demo,
+    collect_chars, collect_hashmap, cycle_vec, filter_map_demo1, filter_month, find_and_position,
+    inspect_demo, iter_rev_demo, match_indices_demo, peek_vector_demo, reduce_or_fold, take_fourth,
+    vector_cut, while_iter,
+};
 use easy_rust::cow::cow_demo;
 use easy_rust::interior_mut::{interior_mut_demo1, mutex_demo, running_panic, rwlock_demo};
-use easy_rust::multiple_thread::{multiple_add_number, thread_one_task, thread_shared_reference};
+use easy_rust::multiple_thread::{multiple_add_number, one_billion_zero_to_one, simple_channel, thread_one_task, thread_shared_reference, two_producer_channel};
 use easy_rust::smart_pointer::rc_demo2;
 
+use easy_rust::traits::use_closure;
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 // use std::num::{IntErrorKind, ParseIntError};
 // use easy_rust::anti_null_exception::parse_str;
@@ -89,21 +95,20 @@ fn main() {
     // cow_demo();
     // rc_demo2();
 
-
-    closure_function_demo();
+    // closure_function_demo();
+    // use_closure(10, "double");
     // thread_one_task();
+    // simple_channel();
 
+    // two_producer_channel();
+    let now = Instant::now();
+    one_billion_zero_to_one();
+    let end = now.elapsed().as_millis();
+    println!("Time elapsed: {} ms", end);
     // thread_shared_reference();
     // multiple_add_number();
     // println!("{}", thread::current().name().unwrap());
 
-
     // thread::sleep(Duration::from_secs(5));
 }
-
-
-
-
-
-
 
