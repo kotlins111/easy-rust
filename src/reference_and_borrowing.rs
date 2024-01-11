@@ -1,14 +1,11 @@
-pub fn reference_demo1(){
+pub fn reference_demo1() {
     let country = "USA".to_string();
     let ref_one = &country;
     let ref_two = &country;
-    println!("{}",ref_one);
-
-
-
+    println!("{}", ref_one);
 }
 
-pub fn mut_reference_demo1(){
+pub fn mut_reference_demo1() {
     //mutable ref
     let mut my_number = 10;
     let num_ref = &mut my_number;
@@ -18,22 +15,24 @@ pub fn mut_reference_demo1(){
 
     let second_number = 100;
     let triple_reference = &&&second_number;
-    println!("Second number == triple_reference? {}", second_number == ***triple_reference);
+    println!(
+        "Second number == triple_reference? {}",
+        second_number == ***triple_reference
+    );
 }
 
-
 /// shadowing doesn't destroy the value
-pub fn shadowing_reference(){
+pub fn shadowing_reference() {
     let country = "USA".to_string();
     let country_ref = &country;
     let country = 8;
-    println!("{country_ref} {country}");  // USA 8
+    println!("{country_ref} {country}"); // USA 8
 }
 
 /// a value can only have a owner
 #[cfg(Error)]
-pub fn reference_demo2(){
-    fn print_country(country_name:String){
+pub fn reference_demo2() {
+    fn print_country(country_name: String) {
         print!("{country_name}");
     }
 
@@ -42,13 +41,14 @@ pub fn reference_demo2(){
     print_country(country); // error
 }
 
-pub fn reference_demo3(){
-    fn add_hungary(country_name : &mut String){
+pub fn reference_demo3() {
+    fn add_hungary(country_name: &mut String) {
         country_name.push_str("-Hungary");
-        println!("Now it says:{}",country_name);
+        println!("Now it says:{}", country_name);
     }
 
-    fn add_hungary_take(mut country: String){  // take ownership
+    fn add_hungary_take(mut country: String) {
+        // take ownership
         country.push_str("-Hungary");
     }
 
@@ -56,30 +56,31 @@ pub fn reference_demo3(){
     add_hungary(&mut country);
 }
 
-
-pub fn copy_clone_demo(){
-    pub fn get_length_ref(input: &String) -> usize{
+pub fn copy_clone_demo() {
+    pub fn get_length_ref(input: &String) -> usize {
         input.split_whitespace().count()
     }
 
-    fn get_length_copy(input: String) -> usize{
+    fn get_length_copy(input: String) -> usize {
         input.clone().split_whitespace().count()
     }
 
-    let mut astr =String::new();
-    for _ in 0..50{
+    let mut astr = String::new();
+    for _ in 0..50 {
         astr.push_str("Some words");
         let b = get_length_copy(astr.clone()); //clone a new String everytime waste of memory
         let a = get_length_ref(&astr);
     }
 }
 
-pub fn variable_init(){
+pub fn variable_init() {
     let my_number;
-    fn loop_and_return(mut counter: i32) -> i32{
+    fn loop_and_return(mut counter: i32) -> i32 {
         loop {
-            counter +=1;
-            if counter % 50 ==0 { break; }
+            counter += 1;
+            if counter % 50 == 0 {
+                break;
+            }
         }
         counter
     }
@@ -95,26 +96,25 @@ pub fn variable_init(){
     println!("{}", my_number);
 }
 
-
 // auto dereference
-struct Item{
-    number:u8,
+struct Item {
+    number: u8,
 }
 
 impl Item {
-    fn compare_number(&self, other_number:u8){
-        println!("Are {} and {other_number} equal? [{}]",self.number,self.number == other_number );
+    fn compare_number(&self, other_number: u8) {
+        println!(
+            "Are {} and {other_number} equal? [{}]",
+            self.number,
+            self.number == other_number
+        );
     }
 }
-fn reference_demo(){
-    let item = Item{
-        number: 10
-    };
+fn reference_demo() {
+    let item = Item { number: 10 };
 
     let reference_item = &item;
     let reference_number = &item.number;
     //println!("{}",reference_number == 10);      // error
-    println!("{}",reference_item.number == 10); // fine
+    println!("{}", reference_item.number == 10); // fine
 }
-
-
