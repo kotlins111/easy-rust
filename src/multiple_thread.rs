@@ -1,6 +1,6 @@
 use std::cell::RefCell;
-use std::sync::{Arc, Mutex};
 use std::sync::mpsc::{channel, Receiver, Sender};
+use std::sync::{Arc, Mutex};
 use std::thread;
 
 pub fn thread_one_task() {
@@ -48,7 +48,7 @@ pub fn multiple_add_number() {
             }
         });
         handle_vec.push(handle); // save the handle so we can call join on it outside of the loop
-        // If we don't push it in the vec, it will just die here
+                                 // If we don't push it in the vec, it will just die here
     }
 
     handle_vec
@@ -104,7 +104,6 @@ pub fn two_producer_channel() {
 pub fn one_billion_zero_to_one() {
     let (tx, rx): (Sender<Vec<u8>>, Receiver<Vec<u8>>) = channel();
 
-
     let huge_vec = vec![0; 1_000_000_000];
     let mut newvec = vec![];
     let mut handel_vec = Vec::with_capacity(100);
@@ -115,7 +114,7 @@ pub fn one_billion_zero_to_one() {
         let handle = thread::spawn(move || {
             for number in work.iter_mut() {
                 *number += 1;
-            };
+            }
             tx_clone.send(work).unwrap();
         });
 
@@ -132,7 +131,12 @@ pub fn one_billion_zero_to_one() {
     // flatten the result vec
     let newvec: Vec<u8> = newvec.into_iter().flatten().collect();
 
-    println!("{:?} ,{:?}, total length:{}", &newvec[0..10], &newvec[newvec.len() - 10..], newvec.len());
+    println!(
+        "{:?} ,{:?}, total length:{}",
+        &newvec[0..10],
+        &newvec[newvec.len() - 10..],
+        newvec.len()
+    );
 
     for number in newvec {
         if number != 1 {

@@ -1,5 +1,7 @@
 use crate::collections::loop_demo;
+use rand::{thread_rng, Rng};
 use std::fmt::{Debug, Display, Formatter};
+use std::ops::{Deref, DerefMut};
 
 struct Animal {
     name: String,
@@ -215,4 +217,286 @@ pub fn start_game() {
     character_fear = sunset_buff(character_fear);
     character_fear = night_buff(character_fear);
     character_fear = morning_buff(character_fear);
+}
+
+// Default Trait
+
+// fn to print default value of i8,String,bool
+
+pub fn default_value() {
+    let default_i8: i8 = Default::default();
+    let default_string: String = Default::default();
+    let default_bool: bool = Default::default();
+
+    println!("{default_i8} {default_string} {default_bool}");
+}
+
+#[derive(Debug)]
+struct Character {
+    name: String,
+    age: u8,
+    height: u32,
+    weight: u32,
+    lifestate: LifeState,
+    can_use: bool,
+}
+
+#[derive(Debug)]
+enum LifeState {
+    Alive,
+    Dead,
+    NeverAlive,
+    Uncertain,
+}
+
+impl Character {
+    fn new() -> Self {
+        Self {
+            name: String::from("Billy"),
+            age: 15,
+            height: 170,
+            weight: 70,
+            lifestate: LifeState::Alive,
+            can_use: true,
+        }
+    }
+
+    fn height(mut self, height: u32) -> Self {
+        self.height = height;
+        self.can_use = false;
+        self
+    }
+
+    fn weight(mut self, weight: u32) -> Self {
+        self.weight = weight;
+        self.can_use = false;
+        self
+    }
+
+    fn name(mut self, name: &str) -> Self {
+        self.name = name.to_string();
+        self.can_use = false;
+        self
+    }
+
+    fn build(mut self) -> Result<Character, String> {
+        if self.height < 200 && self.weight < 300 && !self.name.to_lowercase().contains("smurf") {
+            self.can_use = true;
+            Ok(self)
+        } else {
+            Err("Could not create character. Characters must have:
+                    1) Height below 200
+                    2) Weight below 300
+                    3) A name that is not Smurf (that is a bad word)"
+                .to_string())
+        }
+    }
+}
+
+impl Default for Character {
+    fn default() -> Self {
+        Self {
+            name: String::from("Billy"),
+            age: 15,
+            height: 170,
+            weight: 70,
+            lifestate: LifeState::Alive,
+            can_use: true,
+        }
+    }
+}
+
+pub fn default_struct() {
+    // let character_1 = Character::new("Billy".to_string(), 15, 170, 70, true);
+    let character_2 = Character::default();
+    let character_3 = Character::default().height(180).weight(60).name("Bobby");
+    let character_with_smurf = Character::new().name("Lol I am Smurf!!").build();
+    let character_too_tall = Character::new().height(400).build();
+    let character_too_heavy = Character::new().weight(500).build();
+    let okay_character = Character::new()
+        .name("Billybrobby")
+        .height(180)
+        .weight(100)
+        .build();
+
+    let character_vec = vec![
+        character_with_smurf,
+        character_too_tall,
+        character_too_heavy,
+        okay_character,
+    ];
+
+    for character in character_vec {
+        match character {
+            Ok(character_info) => println!("{:?}", character_info),
+            Err(err_info) => println!("{}", err_info),
+        }
+        println!();
+    }
+    // println!("{:?}", character_3);
+}
+
+// Deref and DerefMut Trait
+
+struct HoldsANumber(u8);
+
+impl HoldsANumber {
+    fn prints_the_number_times_two(&self) {
+        println!("{}", self.0 * 2);
+    }
+}
+
+impl Deref for HoldsANumber {
+    type Target = u8;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl DerefMut for HoldsANumber {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+pub fn add_struct_with_i32() {
+    let mut my_number = HoldsANumber(10);
+    *my_number = 110;
+    println!("{:?}", my_number.checked_sub(100)); // smart pointer , use method of u8
+    println!("{:?}", *my_number + 2);
+}
+
+// only impl Deref trait for smart pointer
+
+#[derive(Debug)]
+struct Character1 {
+    name: String,
+    strength: u8,
+    dexterity: u8,
+    health: u8,
+    intelligence: u8,
+    wisdom: u8,
+    charm: u8,
+    hit_points: i8,
+    alignment: Alignment,
+}
+
+impl Character1 {
+    fn new(
+        name: String,
+        strength: u8,
+        dexterity: u8,
+        health: u8,
+        intelligence: u8,
+        wisdom: u8,
+        charm: u8,
+        hit_points: i8,
+        alignment: Alignment,
+    ) -> Self {
+        Self {
+            name,
+            strength,
+            dexterity,
+            health,
+            intelligence,
+            wisdom,
+            charm,
+            hit_points,
+            alignment,
+        }
+    }
+
+    fn new_dice(dice: Dice) -> Self {
+        match dice {
+            Dice::Three => Self {
+                name: "".to_string(),
+                strength: three_die_six(),
+                dexterity: three_die_six(),
+                health: 0,
+                intelligence: three_die_six(),
+                wisdom: three_die_six(),
+
+                charm: 0,
+                hit_points: 0,
+                alignment: Alignment::Good,
+            },
+            Dice::Four => Self {
+                name: "".to_string(),
+                strength: four_die_six(),
+                dexterity: four_die_six(),
+                health: 0,
+                intelligence: four_die_six(),
+                wisdom: four_die_six(),
+                charm: 0,
+                hit_points: 0,
+                alignment: Alignment::Good,
+            },
+        }
+    }
+}
+
+#[derive(Debug)]
+enum Alignment {
+    Good,
+    Neutral,
+    Evil,
+}
+
+impl Deref for Character1 {
+    // impl Deref for Character. Now we can do any integer math we want!
+    type Target = i8;
+
+    fn deref(&self) -> &Self::Target {
+        &self.hit_points
+    }
+}
+
+pub fn only_impl_deref_on_smart_pointers() {
+    let billy = Character1::new("Billy".to_string(), 9, 8, 7, 10, 19, 19, 5, Alignment::Good); // Create two characters, billy and brandy
+    let brandy = Character1::new(
+        "Brandy".to_string(),
+        9,
+        8,
+        7,
+        10,
+        19,
+        19,
+        5,
+        Alignment::Good,
+    );
+
+    let hit_points_vec = vec![*billy, *brandy]; // Push *brandy? Push *billy?
+
+    println!("{:?}", hit_points_vec);
+
+    let weak_billy = Character1::new_dice(Dice::Three);
+    let strong_billy = Character1::new_dice(Dice::Four);
+
+    println!("{:?}", weak_billy);
+}
+
+fn three_die_six() -> u8 {
+    // A "die" is the thing you throw to get the number
+    let mut generator = thread_rng(); // Create our random number generator
+    let mut stat = 0; // This is the total
+    for _ in 0..3 {
+        stat += generator.gen_range(1..=6); // Add each time
+    }
+    stat // Return the total
+}
+
+fn four_die_six() -> u8 {
+    let mut generator = thread_rng();
+    let mut results = vec![]; // First put the numbers in a vec
+    for _ in 0..4 {
+        results.push(generator.gen_range(1..=6));
+    }
+    results.sort(); // Now a result like [4, 3, 2, 6] becomes [2, 3, 4, 6]
+    results.remove(0); // Now it would be [3, 4, 6]
+    results.iter().sum() // Return this result
+}
+
+enum Dice {
+    Three,
+    Four,
 }

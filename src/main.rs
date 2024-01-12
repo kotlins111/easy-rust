@@ -8,10 +8,20 @@ use easy_rust::closure::{
 };
 use easy_rust::cow::cow_demo;
 use easy_rust::interior_mut::{interior_mut_demo1, mutex_demo, running_panic, rwlock_demo};
-use easy_rust::multiple_thread::{multiple_add_number, one_billion_zero_to_one, simple_channel, thread_one_task, thread_shared_reference, two_producer_channel};
+use easy_rust::multiple_thread::{
+    multiple_add_number, one_billion_zero_to_one, simple_channel, thread_one_task,
+    thread_shared_reference, two_producer_channel,
+};
 use easy_rust::smart_pointer::rc_demo2;
 
-use easy_rust::traits::use_closure;
+use easy_rust::fs::{read_txt, write_txt};
+use easy_rust::print::{print_random_chars, random_i32_to_unicode};
+use easy_rust::traits::{
+    add_struct_with_i32, default_struct, default_value, only_impl_deref_on_smart_pointers,
+    use_closure,
+};
+use easy_rust::types::swap_demo;
+use easy_rust::userinput::{args_from_command_line, get_all_env, scan_user_input};
 use std::thread;
 use std::time::{Duration, Instant};
 
@@ -29,6 +39,38 @@ use std::time::{Duration, Instant};
 // static allocate fixed memory
 static SEASONS: [&str; 4] = ["Spring", "Summer", "Fall", "Winter"];
 const NUMBER_OF_MONTHS: u8 = 12;
+
+macro_rules! return_six {
+    () => {
+        6
+    };
+}
+
+macro_rules! check {
+    ($input1:ident, $input2:expr) => {
+        println!(
+            "Is {:?} equal to {:?}? {:?}",
+            $input1,
+            $input2,
+            $input1 == $input2
+        );
+    };
+}
+
+macro_rules! print_anything {
+    ($($input1:tt),*) => {
+        let output = stringify!($($input1),*);
+        println!("{}", output);
+    };
+}
+macro_rules! make_a_function {
+    ($name:ident, $($input:tt),*) => { // First you give it one name for the function, then it checks everything else
+        fn $name() {
+            let output = stringify!($($input),*); // It makes everything else into a string
+            println!("{}", output);
+        }
+    };
+}
 
 fn main() {
     //print_demo1();
@@ -101,14 +143,38 @@ fn main() {
     // simple_channel();
 
     // two_producer_channel();
-    let now = Instant::now();
-    one_billion_zero_to_one();
-    let end = now.elapsed().as_millis();
-    println!("Time elapsed: {} ms", end);
+    // let now = Instant::now();
+    // one_billion_zero_to_one();
+    // let end = now.elapsed().as_millis();
+    // println!("Time elapsed: {} ms", end);
     // thread_shared_reference();
     // multiple_add_number();
     // println!("{}", thread::current().name().unwrap());
 
     // thread::sleep(Duration::from_secs(5));
-}
+    // default_value();
+    // default_struct();
 
+    // add_struct_with_i32();
+    // only_impl_deref_on_smart_pointers();
+    // random_i32_to_unicode();
+    // swap_demo();
+
+    //macros
+
+    // let six = return_six!();
+    // println!("{}", six);
+    //
+    // check!(six, 6);
+    //
+    // make_a_function!(print_it, 5, 5, 6, I);
+    // print_it();
+    // print_random_chars();
+
+    // scan_user_input();
+    // args_from_command_line();
+
+    // get_all_env();
+
+    read_txt();
+}

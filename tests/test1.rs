@@ -2,8 +2,9 @@
 mod test {
     use easy_rust::anti_null_exception::{check_if_five, give_result, take_fifth};
     use easy_rust::traits::EvenOddVec;
+    use rand::{thread_rng, Rng};
     use std::collections::BinaryHeap;
-
+    use std::mem;
     #[test]
     fn test1() {
         let number = take_fifth(vec![1, 2, 3, 4]);
@@ -110,5 +111,85 @@ mod test {
         let new_vec = EvenOddVec::from(numbers);
         assert_eq!(new_vec.0[0][0], 2);
         assert_eq!(new_vec.0[1][1], 7);
+    }
+
+    #[test]
+    fn test_random_number() {
+        let mut number_maker = thread_rng();
+        for _ in 0..5 {
+            println!("{}", number_maker.gen_range(0..10));
+        }
+    }
+
+    #[test]
+    fn test_par_iter() {
+        use rayon::prelude::*;
+        let mut my_vec = vec![0; 1_000_000_000];
+        my_vec
+            .par_iter_mut()
+            .enumerate()
+            .for_each(|(index, number)| *number += index + 1); //quite fast
+        println!("{:?}", &my_vec[5000..5005]);
+    }
+
+    #[test]
+    fn test_escape_unicode() {
+        let korean_word = "청춘예찬";
+        for character in korean_word.chars() {
+            print!("{} ", character.escape_unicode());
+        }
+    }
+
+    #[test]
+    fn test_dedup_vec() {
+        let mut my_vec = vec!["sun", "sun", "moon", "moon", "sun", "moon", "moon"];
+        my_vec.sort();
+        my_vec.dedup();
+        assert_eq!(my_vec, vec!["moon", "sun"]);
+    }
+
+    #[test]
+    fn test_string_pop() {
+        let mut my_string = String::from(".daer ot drah tib elttil a si gnirts sihT");
+        loop {
+            let pop_result = my_string.pop();
+            match pop_result {
+                Some(character) => print!("{}", character),
+                None => break,
+            }
+        }
+
+        //This string is a little bit hard to read.
+    }
+
+    #[test]
+    fn test_retain_string() {
+        let mut my_string = String::from("Age: 20 Height: 194 Weight: 80");
+        my_string.retain(|character| character.is_alphabetic() || character == ' '); // Keep if a letter or a space
+        dbg!(my_string);
+    }
+
+    #[test]
+    fn test_mem_size() {
+        assert_eq!(4, mem::size_of::<i32>());
+        let my_array = [8u8; 50];
+        assert_eq!(50, mem::size_of_val(&my_array));
+        let mut some_string = String::from("You can drop a String because it's on the heap");
+        mem::drop(some_string);
+    }
+    #[test]
+    fn test_mem_swap() {}
+
+    #[test]
+    fn test_mem_take() {
+        let mut number_vec = vec![8, 7, 0, 2, 49, 9999];
+        let mut new_vec = vec![];
+
+        number_vec.iter_mut().for_each(|number| {
+            let taker = mem::take(number);
+            new_vec.push(taker);
+        });
+
+        println!("{:?}\n{:?}", number_vec, new_vec);
     }
 }

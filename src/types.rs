@@ -4,6 +4,7 @@ use crate::types::Star::BrownDwarf;
 use std::fmt::{Debug, Display, Formatter, Pointer};
 use std::iter::{Skip, Take};
 use std::slice::Iter;
+use std::{fmt, mem};
 
 type CharacterVec = Vec<char>;
 type SkipFourTakeFive<'a, T> = Take<Skip<Iter<'a, T>>>;
@@ -346,4 +347,39 @@ fn give_filestate(input: &FileState) {
 
 fn todo_function() -> String {
     todo!() // no need to return String for now, do it later
+}
+
+struct Ring {
+    // Create a ring from Lord of the Rings
+    owner: String,
+    former_owner: String,
+    seeker: String, // seeker means "person looking for it"
+}
+
+impl Ring {
+    fn new(owner: &str, former_owner: &str, seeker: &str) -> Self {
+        Self {
+            owner: owner.to_string(),
+            former_owner: former_owner.to_string(),
+            seeker: seeker.to_string(),
+        }
+    }
+}
+
+impl Display for Ring {
+    // Display to show who has it and who wants it
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{} has the ring, {} used to have it, and {} wants it",
+            self.owner, self.former_owner, self.seeker
+        )
+    }
+}
+
+pub fn swap_demo() {
+    let mut one_ring = Ring::new("Frodo", "Gollum", "Sauron");
+    println!("{}", one_ring);
+    mem::swap(&mut one_ring.owner, &mut one_ring.former_owner); // Gollum got the ring back for a second
+    println!("{}", one_ring);
 }

@@ -1,3 +1,4 @@
+use std::ops::{Add, AddAssign, Div, Mul, Sub};
 pub fn print_demo1() {
     let s = "hello world";
     let arr = [1, 3, 4, 5, 6];
@@ -82,4 +83,53 @@ pub fn print_demo4() {
     let a = "SEOUL";
     let b = "TOKYO";
     println!("{city1:-<15}{city2:->15}", city1 = a, city2 = b)
+}
+
+pub fn random_i32_to_unicode() {
+    use rand::{thread_rng, Rng};
+    let some_character = char::from(99); // This one is easy - no need for TryFrom
+    println!("{}", some_character);
+
+    let mut random_generator = thread_rng();
+    // This will try 40,000 times to make a char from a u32.
+    // The range is 0 (std::u32::MIN) to u32's highest number (std::u32::MAX). If it doesn't work, we will give it '-'.
+    for _ in 0..40_000 {
+        let bigger_character =
+            char::try_from(random_generator.gen_range(10000..50000u32)).unwrap_or('-');
+        print!("{}", bigger_character)
+    }
+}
+
+fn check_method_number() {
+    let some_number = 200_u8;
+    let other_number = 200_u8;
+
+    println!("{:?}", some_number.checked_add(other_number)); //None cause overflow
+    println!("{:?}", some_number.checked_add(1)); // Some(201)
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Add for Point {
+    type Output = Self;
+    fn add(self, other: Point) -> Self {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+pub fn print_random_chars() {
+    use rand::seq::SliceRandom;
+    let my_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+    let mut rng = rand::thread_rng();
+    for _ in 0..6 {
+        print!("{} ", my_letters.choose(&mut rng).unwrap());
+    }
 }
